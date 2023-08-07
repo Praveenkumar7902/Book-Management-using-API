@@ -136,7 +136,7 @@ booky.get("/authors/books/:isbn" , (req , res) => {
         (author) => author.books.includes(req.params.isbn)
 
     );
-    if(getSpecificAuthor === 0){
+    if(getSpecificAuthor.length === 0){
         return res.json({error:`No author found for the book of ${req.params.isbn}`});
     }
     return res.json({author:getSpecificAuthor})
@@ -164,7 +164,7 @@ booky.get("/publication/:pbid",(req,res)=>{
     const publicid = database.publication.filter(
         (publicationid) => publicationid.PID == req.params.pbid
     );
-    if(publicid == 0){
+    if(publicid.length === 0){
         return res.json({error:`the requested publication id ${req.params.pbid} is not found`})
     }
     return res.json({publications : publicid})
@@ -176,7 +176,7 @@ booky.get("/publication/book/:id",(req,res)=>{
     const publicbkid = database.publication.filter(
         (publicationbk) => publicationbk.books.includes(req.params.id)
     );
-    if(publicbkid == 0){
+    if(publicbkid.length === 0){
         return res.json({error:`the requested publication based on b ${req.params.id} is not found`})
     }
     return res.json({publications : publicbkid})

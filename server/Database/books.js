@@ -11,7 +11,9 @@ const BookSchema = mongoose.Schema(
         author: [Number],
         publication:[Number],
         category:[String],    
-    }
+    }, {
+  versionKey: false
+}
 );
 
 const BookModel = mongoose.model("Books",BookSchema);

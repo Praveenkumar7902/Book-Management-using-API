@@ -32,10 +32,23 @@ mongoose
 //to get all the books
 //to change the format to mongoose (mongodb and mongoose are asynchronous so write format in async and wait)
 booky.get("/", async (req, res) => {
+  try{
   const getAllBooks = await BookModel.find();
-  return res.json(
-    getAllBooks
-  );
+  return res.status(200).json({
+    status:200,
+    message:"The books are Successfully fetched",
+    data:getAllBooks
+  }
+  )}
+  catch(error){
+ return res.status(500).json(
+  {
+    status:"error",
+    message:"Something went wrong while fetching books",
+    code:500
+  }
+ )
+  }
 });
 
 /* 
@@ -147,7 +160,7 @@ booky.get("/authors", async (req, res) => {
 });
 //to get author based on id
 
-booky.get("/authorid/:isbn", async (req, res) => {
+booky.get("/author/id/:isbn", async (req, res) => {
   const getSpecificAuthor = await AuthorModel.findOne({ AID: req.params.isbn });
 
   if (!getSpecificAuthor) {

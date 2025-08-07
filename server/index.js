@@ -67,15 +67,6 @@ booky.get("/", async (req, res) => {
 
      */
 booky.get("/id/:isbn", async (req, res) => {
-  
-   if (!getSpecificBooks) {
-    return res.status(404).json({
-      success: false,
-      message: "No book found with the given ISBN.",
-      data: null,
-      statusCode: 404
-    });
-  }
   try{
   const getSpecificBooks = await BookModel.findOne({ ISBN: req.params.isbn });
     return res.status(200).json({

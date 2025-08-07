@@ -35,15 +35,17 @@ booky.get("/", async (req, res) => {
   try{
   const getAllBooks = await BookModel.find();
   return res.status(200).json({
-    status:200,
+    status:true,
     message:"The books are Successfully fetched",
-    data:getAllBooks
+    data:getAllBooks,
+    code:200
   }
   )}
   catch(error){
+  console.error("Error fetching books:", error);
  return res.status(500).json(
   {
-    status:"error",
+    status:false,
     message:"Something went wrong while fetching books",
     code:500
   }
@@ -64,17 +66,33 @@ booky.get("/", async (req, res) => {
     The filter filters the books by checking the value of ./database.book.ISBN === req.params.isbn 
 
      */
-booky.get("/is/:isbn", async (req, res) => {
-  const getSpecificBooks = await BookModel.findOne({ ISBN: req.params.isbn });
-  //null value is returned
-  if (!getSpecificBook) {
-    return res.json({
-      error: `No book found for the requested ISBN of ${req.params.isbn}`,
+booky.get("/id/:isbn", async (req, res) => {
+  
+   if (!getSpecificBooks) {
+    return res.status(404).json({
+      success: false,
+      message: "No book found with the given ISBN.",
+      data: null,
+      statusCode: 404
     });
   }
-  return res.json({ book: getSpecificBook });
-});
-
+  try{
+  const getSpecificBooks = await BookModel.findOne({ ISBN: req.params.isbn });
+    return res.status(200).json({
+    status:true,
+    message:"The books are Successfully fetched based on the entered ISBN",
+    data:getSpecificBooks,
+    code:200
+    })
+  }
+  catch(error){
+      console.error("Error fetching books:", error);
+ return res.status(500).json({
+    status:false,
+    message:"Server error while trying to fetch the book.",
+    code:404
+ })
+  };
 /* 
     route  - /cat route
     description - get a specific book by category
